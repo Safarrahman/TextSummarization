@@ -3003,3 +3003,10 @@ x==========x]
 x==========x]
 [2024-08-27 22:21:26,324: INFO: main: *******************]
 [2024-08-27 22:21:26,324: INFO: main: >>>>>> stage Model Evaluation stage started <<<<<<]
+[2024-08-27 22:29:11,512: INFO: main: >>>>>> stage Model Evaluation stage completed <<<<<<
+
+x==========x]
+[2024-08-27 22:39:11,816: INFO: server: Started server process [48277]]
+[2024-08-27 22:39:11,816: INFO: on: Waiting for application startup.]
+[2024-08-27 22:39:11,816: INFO: on: Application startup complete.]
+[2024-08-27 22:39:11,817: INFO: server: Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)]
