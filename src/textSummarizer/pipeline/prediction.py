@@ -14,7 +14,6 @@ class PredictionPipeline:
         return text
 
     def postprocess_summary(self, summary):
-        # Enhanced summary postprocessing
         # Capitalize the first letter of each sentence
         summary = re.sub(r'([.?!]\s+)([a-z])', lambda x: x.group(1) + x.group(2).upper(), summary)
         
@@ -24,8 +23,21 @@ class PredictionPipeline:
 
         # Normalize spaces
         summary = re.sub(r'\s+', ' ', summary).strip()
-        
-        # Ensure the summary ends with a period, if not already ending with a punctuation
+
+        # Check if the summary ends with a valid punctuation mark
+        if summary and summary[-1] not in '.?!':
+            # Split summary into sentences, keeping the punctuation
+            sentences = re.split(r'(?<=[.?!])\s+', summary)
+            
+            # Reconstruct the summary without the last incomplete sentence
+            if len(sentences) > 1:
+                summary = ' '.join(sentences[:-1])  # Remove the last sentence if it's incomplete
+            else:
+                summary = sentences[0]  # If there are no complete sentences, keep it as is
+
+            summary = summary.strip()  # Remove any trailing spaces
+
+        # Ensure the summary ends with a period if it's complete and doesn't have punctuation
         if summary and summary[-1] not in '.?!':
             summary += '.'
         

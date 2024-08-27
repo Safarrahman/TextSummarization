@@ -43,6 +43,17 @@
             align-items: center;
         }
 
+        .file-upload {
+            margin-bottom: 15px; /* Add margin to create space between the file upload and the text area */
+        }
+
+        .or-divider {
+            margin: 15px 0;
+            font-weight: 700;
+            font-size: 18px;
+            color: #3b5998;
+        }
+
         textarea {
             width: 100%;
             padding: 15px;
@@ -110,7 +121,6 @@
             transition: background 0.3s ease;
         }
 
-        /* Adding dots for slider positions */
         .dot {
             position: absolute;
             width: 4px;
@@ -209,22 +219,51 @@
             margin-top: -15px;
             margin-bottom: 20px;
         }
+
+        .spinner {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            transform: translate(-50%, -50%);
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>Brifefy - Text Summarization</h1>
-        <form method="post" action="/summarize" id="summarize-form" enctype="multipart/form-data">
-            <textarea name="text" placeholder="Paste your text here..." id="input-text" oninput="updateTextLength()">{{ text }}</textarea>
-            <div id="text-length" class="text-length">Length: 0 characters</div>
-            
-             <!-- File upload input for PDF or DOCX -->
-            <div class="file-upload">
-                <label for="file">Or upload a file PDF:</label>
-                <input type="file" id="file" name="file" accept=".pdf, .docx">
-            </div>
 
+        <form method="post" action="/upload" id="upload-form" enctype="multipart/form-data">
+            <div class="file-upload">
+                <label for="file">Upload a file (PDF):</label>
+                <input type="file" id="file" name="file" accept=".pdf" onchange="document.getElementById('upload-form').submit()">
+            </div>
+        </form>
+
+        <div class="or-divider">OR</div>
+
+        <form method="post" action="/summarize" id="summarize-form" onsubmit="showSpinner()">
+            <textarea name="text" placeholder="Paste your text here..." id="input-text" oninput="updateTextLength()">{{ text }}</textarea>
+            <div id="text-length" class="text-length">Length: {{ text | length }} characters</div>
+        
             <!-- Slider for Summary Length -->
             <div class="slider-group">
                 <label for="summary-length" class="slider-label">Summary Length:</label>
@@ -236,10 +275,9 @@
                     <div class="dot medium"></div>
                     <div class="dot long"></div>
                 </div>
-               
             </div>
 
-             <!-- Hidden input to store the mapped summary length value -->
+            <!-- Hidden input to store the mapped summary length value -->
             <input type="hidden" id="summary_length" name="summary_length" value="short">
 
             <!-- Button Group with Summarize and Clear -->
@@ -249,12 +287,14 @@
             </div>
         </form>
 
+         <!-- Spinner Element -->
+         <div id="spinner" class="spinner"></div>
+
         {% if summary %}
         <div class="summary">
             <h2>Summary:</h2>
             <p id="summary-text">{{ summary }}</p>
         </div>
-        <!-- <div id="summary-length-count" class="summary-length">Summary Length: {{ summary|length }} characters</div> -->
         {% endif %}
     </div>
 
@@ -286,8 +326,17 @@
                     break;
             }
             document.getElementById('summary_length').value = summaryLength;
-            // Update form or display this value as needed
         }
+
+        // Show spinner when summarize button is clicked
+        function showSpinner() {
+            document.getElementById('spinner').style.display = "block";
+        }
+
+        // Hide spinner once the summary is loaded (this will be automatic as it's rendered on the server side)
+        window.onload = function() {
+            document.getElementById('spinner').style.display = "none";
+        };
 
         // Initialize text length on page load
         updateTextLength();
