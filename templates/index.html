@@ -202,6 +202,13 @@
             margin-top: -15px;
             margin-bottom: 20px;
         }
+
+        .summary-length {
+            font-size: 14px;
+            color: #666;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
@@ -223,6 +230,7 @@
                     <div class="dot medium"></div>
                     <div class="dot long"></div>
                 </div>
+               
             </div>
 
              <!-- Hidden input to store the mapped summary length value -->
@@ -240,6 +248,7 @@
             <h2>Summary:</h2>
             <p id="summary-text">{{ summary }}</p>
         </div>
+        <!-- <div id="summary-length-count" class="summary-length">Summary Length: {{ summary|length }} characters</div> -->
         {% endif %}
     </div>
 
@@ -254,6 +263,7 @@
             document.getElementById('input-text').value = '';
             document.getElementById('summary-text').innerHTML = '';
             document.getElementById('text-length').innerText = 'Length: 0 characters';
+            document.getElementById('summary-length-count').innerText = 'Summary Length: 0 characters';
         }
 
         function updateSummaryLengthLabel(value) {

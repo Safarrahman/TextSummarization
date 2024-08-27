@@ -28,10 +28,21 @@ async def summarize_text(request: Request, text: str = Form(...), summary_length
     try:
         obj = PredictionPipeline()
         summarized_text = obj.predict(text, summary_length=summary_length)
+        summary_length_count = len(summarized_text)
     except Exception as e:
         summarized_text = f"Error: {str(e)}"
+        summary_length_count = 0
 
-    return templates.TemplateResponse("index.html", {"request": request, "summary": summarized_text, "text": text, "summary_length": summary_length})
+    return templates.TemplateResponse(
+        "index.html", 
+        {
+            "request": request, 
+            "summary": summarized_text, 
+            "text": text, 
+            "summary_length": summary_length,
+            "summary_length_count": summary_length_count  # Pass the length of the summary to the template
+        }
+    )
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
