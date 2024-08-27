@@ -215,10 +215,16 @@
 <body>
     <div class="container">
         <h1>Brifefy - Text Summarization</h1>
-        <form method="post" action="/summarize" id="summarize-form">
+        <form method="post" action="/summarize" id="summarize-form" enctype="multipart/form-data">
             <textarea name="text" placeholder="Paste your text here..." id="input-text" oninput="updateTextLength()">{{ text }}</textarea>
             <div id="text-length" class="text-length">Length: 0 characters</div>
             
+             <!-- File upload input for PDF or DOCX -->
+            <div class="file-upload">
+                <label for="file">Or upload a file PDF:</label>
+                <input type="file" id="file" name="file" accept=".pdf, .docx">
+            </div>
+
             <!-- Slider for Summary Length -->
             <div class="slider-group">
                 <label for="summary-length" class="slider-label">Summary Length:</label>
