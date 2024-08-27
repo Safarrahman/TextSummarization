@@ -67,7 +67,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            width: 50%; /* Reduced the width to half */
+            width: 50%;
             position: relative;
         }
 
@@ -111,42 +111,28 @@
         }
 
         /* Adding dots for slider positions */
-        .slider-container::before,
-        .slider-container::after {
-            content: '';
+        .dot {
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 4px;
+            height: 4px;
             background: #4caf50;
             border-radius: 50%;
             top: 50%;
             transform: translateY(-50%);
         }
 
-        .slider-container::before {
-            left: 0;
+        .dot.short {
+            left: 16%;
         }
 
-        .slider-container::after {
+        .dot.medium {
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%) translateY(-50%);
         }
 
-        .slider-container::before,
-        .slider-container::after,
-        .slider-container .middle-dot {
-            background: #4caf50;
-        }
-
-        /* Middle dot */
-        .slider-container .middle-dot {
-            position: absolute;
-            left: 100%;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            top: 50%;
-            transform: translate(-100%, -50%);
+        .dot.long {
+            left: 84%;
+            transform: translateX(-100%) translateY(-50%);
         }
 
         .button-group {
@@ -231,11 +217,16 @@
                 <label for="summary-length" class="slider-label">Summary Length:</label>
                 <div class="slider-container">
                     <span>Short</span>
-                    <input type="range" id="summary-length" name="summary_length" min="1" max="3" value="1" oninput="updateSummaryLengthLabel(this.value)">
+                    <input type="range" id="summary-length" name="summary_length_slider" min="1" max="3" value="1" oninput="updateSummaryLengthLabel(this.value)">
                     <span>Long</span>
-                    <div class="middle-dot"></div>
+                    <div class="dot short"></div>
+                    <div class="dot medium"></div>
+                    <div class="dot long"></div>
                 </div>
             </div>
+
+             <!-- Hidden input to store the mapped summary length value -->
+            <input type="hidden" id="summary_length" name="summary_length" value="short">
 
             <!-- Button Group with Summarize and Clear -->
             <div class="button-group">
@@ -278,7 +269,7 @@
                     summaryLength = 'long';
                     break;
             }
-            document.getElementById('summary-length').value = value;
+            document.getElementById('summary_length').value = summaryLength;
             // Update form or display this value as needed
         }
 
