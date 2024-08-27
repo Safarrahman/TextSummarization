@@ -44,24 +44,9 @@ class PredictionPipeline:
         return summary
 
 
-    def get_summarization_prompt(self, text):
-        prompt = f"""Summarize: {text}
-
-    Rules:
-    1. Provide an exact summary of the input text.
-    2. Do not add any information not present in the original text.
-    3. If the input is very short (less than 10 words), repeat it verbatim without changes or additions.
-  
-    Summary:"""
-        return prompt
-
-
     def predict(self, text, summary_length="short"):
         # Preprocess the text
         text = self.preprocess_text(text)
-
-        # Generate the summarization prompt
-        # text = self.get_summarization_prompt(text)
         
         # Load the locally saved T5 model and tokenizer
         model_path = 'artifacts/model_trainer/t5-large-model'
