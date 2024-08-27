@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 import os
 import PyPDF2
-# import docx
 
 app = FastAPI()
 
@@ -29,14 +28,6 @@ def extract_text_from_pdf(file):
     for page in reader.pages:
         text += page.extract_text()
     return text
-
-# Function to extract text from DOCX
-# def extract_text_from_docx(file):
-#     doc = docx.Document(file)
-#     text = ''
-#     for paragraph in doc.paragraphs:
-#         text += paragraph.text + '\n'
-#     return text
 
 @app.get("/", response_class=HTMLResponse)
 async def get_form(request: Request):
