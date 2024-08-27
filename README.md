@@ -2,11 +2,11 @@
 ### STEP 01- Create a conda environment after opening the repository
 
 ```bash
-conda create -n summaryName python=3.8 -y
+conda create -n envName python=3.8 -y
 ```
 
 ```bash
-conda activate summaryName
+conda activate envName
 ```
 
 
